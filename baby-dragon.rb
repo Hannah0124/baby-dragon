@@ -3,22 +3,16 @@ require "colorize"
 class BabyDragon 
   attr_reader :name, :fullness_level, :thirst_level
 
-  def initialize(name)
+  def initialize(name, ascii)
     @name = name 
     @is_asleep = false 
     @fullness_level = 10  # hungry: 0, full: 10
     @thirst_level = 10  #thirsty: 0, full: 10
     @time = 0
-    puts "#{name} was born!🐲\n".bold
-    puts "       \\****__              ____".green                                              
-    puts "         |    *****\\_      --/ *\\-__".green                                          
-    puts "         /_          (_    ./ ,/----'".green                                         
-    puts "Art by     \\__         (_./  /".green                                                
-    puts " Ironwing     \\__           \\___----^__".green                                       
-    puts "               _/   _                  \\ ".green                                      
-    puts "        |    _/  __/ )\\\"\\ _____         *\\   ".green                               
-    puts "        |\\__/   /    ^ ^       \\____      )   ".green                                
-    puts "         \\___--\\\"                    \\_____ )  \n\n\n".green
+    @ascii = ascii 
+
+    puts "#{name} was born. 🐲".bold
+    puts ascii
   end 
 
   def eat
@@ -26,7 +20,6 @@ class BabyDragon
 
     @fullness_level = 10
 
-    # Passage of time happens
     passage_of_time 
   end 
 
@@ -35,16 +28,14 @@ class BabyDragon
 
     @thirst_level = 10
 
-    # Passage of time happens
     passage_of_time
   end 
   
   def takes_a_nap 
-    puts "\n\n#{@name} curls up and dozes off..."
+    puts "\n\n#{@name} curls up and dozes off...🥱😴💤🛌"
    
     @is_asleep = true
 
-    # Passage of time happens
     3.times do 
       passage_of_time 
     end 
@@ -53,17 +44,27 @@ class BabyDragon
   end 
 
   def play 
-    puts "\n\n#{@name} chills out next to the fireplace and eats a lot of salty snacks🛀"
+    puts "\n\n#{@name} chills out next to the fireplace 🔥and eats a lot of salty snacks🥰"
 
     @fullness_level -= 1
     @thirst_level -= 1
 
-    # Passage of time happens
     passage_of_time 
   end 
 
   def fight(another_dragon) 
-    puts "\n\n#{@name} fought with #{another_dragon}🔥🧨"
+    puts "\n\n#{@name} fought with #{another_dragon}🥊"
+
+    puts "
+            _)               (_
+           _) \\\ /\\%/\\ /\\_/\\ / (_
+           _)  \\\(0 0) (0 0)//  (_
+          )_ -- \\(oo) (oo)/ -- _(
+            )_ / /\\\__,__//\\ \\ _(
+             )_ /   --;--   \\ _(
+         *.    ( (  )) ((  ) )    .*
+           '...(____)z z(____)...'
+    ".red.bold
 
     @fullness_level -= 1
     @thirst_level -= 1
@@ -72,7 +73,7 @@ class BabyDragon
   end 
 
   def cry 
-    puts "\n\n#{@name} cried! 😭"
+    puts "\n\n#{@name} cried! 😭😭😭"
 
     @fullness_level -= 1
     @thirst_level -= 5
@@ -82,47 +83,75 @@ class BabyDragon
 
   def passage_of_time 
     @time += 1
-    puts "#{@time} hour(s) has passed..⏰".blue
+    
+    puts "#{@time} hour(s) have passed..⏰".blue
 
     if @thirst_level > 0 
       @thirst_level -= 1
-    else # if thirsty 
+    else 
       if @is_asleep 
         @is_asleep = false 
-        puts "#{@name} was super thirsty! #{@name} died!😵".red.on_light_yellow.bold.blink
+        puts "\n\n#{@name} was super thirsty! #{@name} died!😵\n".red.on_light_yellow.bold.blink
         exit
       end 
     end 
 
     if @fullness_level > 0 
       @fullness_level -= 1
-    else #if hungry
-      if @is_asleep  # if sleeping
-        @is_asleep = false # awake
+    else 
+      if @is_asleep  
+        @is_asleep = false 
         puts "#{@name} woke up!"
       end 
-      puts "#{@name} was super hangry! They ATE YOU! >:(\n\n" 
+      puts "\n\n#{@name} was super hangry! They ATE YOU! >:(" 
       exit  
     end    
   end 
 end 
 
-puff = BabyDragon.new("Puff The Magic Dragon")
-sprinkles = BabyDragon.new("Sprinkles Dragon")
+puff_pic = "
+         \****__              ____                                              
+         |    *****\_      --/ *\-__                                          
+         /_          (_    ./ ,/----'                                         
+           \\__         (_./  /                                                
+              \\__           \\___----^__                                       
+               _/   _                  \\                                      
+        |    _/  __/ )\\\"\\ _____         *\\                                    
+        |\\__/   /    ^ ^       \\____      )                                   
+         \\___--\\\"                    \\_____ )                                  
+".cyan.bold
 
+sprinkles_pic = "
+            ۪|\\___/|\n
+            (,\\  /,)\\\\
+            /     /  \\\\
+            (@_^_@)/   \\\\
+            W//W_/     \\\\
+            (//) |        \\\\
+          (/ /) _|_ /   )  \\\\
+        (// /) '/,_ _ _/  (~^-.\\
+      (( // )) ,-{        _    `.\\
+     (( /// ))  '/\      /      |\\
+    (( ///))     `.   {       }\\
+    ((/ ))    .----~-.\   \-'\\
+              ///.----..>   \\
+              ///-._ _  _ _}\\
+".green.bold
+
+puff = BabyDragon.new("Puff The Magic Dragon", puff_pic)
+sprinkles = BabyDragon.new("Sprinkles Dragon", sprinkles_pic)
 
 sprinkles.play
 sprinkles.takes_a_nap
 sprinkles.eat
 sprinkles.drink
-sprinkles.cry
 sprinkles.takes_a_nap
-puff.fight(sprinkles.name)
+sprinkles.fight(puff.name)
+sprinkles.cry
+sprinkles.drink
 sprinkles.eat
-
 
 until (sprinkles.fullness_level == 0)
   sprinkles.play
   sprinkles.takes_a_nap
-  puff.fight(sprinkles.name)
 end
